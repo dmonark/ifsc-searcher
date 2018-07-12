@@ -1,0 +1,28 @@
+{
+  "name": "ifsc-searcher",
+  "version": "0.0.1",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/mdedakiya/ifsc-searcher"
+  },
+  "author": "mdedakiya",
+  "license": "MIT",
+  "original-credits": "ifsc-searcher",
+  "original-credits-repository": {
+    "type": "git",
+    "url": "git://github.com/mdedakiya/ifsc-searcher.git"
+  },
+  "main": "public/index.html",
+  "dependencies": {
+    "webpack": "^1.12.13",
+    "webpack-dev-server": "^1.16.2",
+    "webpack-raphael": "^2.1.4"
+  },
+  "devDependencies": {
+    "webpack-dev-server": "~1.14.1"
+  },
+  "scripts": {
+    "start": "node app start  ",
+    "dev": "webpack-dev-server --hot --inline"
+  }
+}
