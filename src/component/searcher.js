@@ -2,14 +2,7 @@ import React from "react";
 import TextField from "@material-ui/core/TextField";
 import Grid from "@material-ui/core/Grid";
 import ResultCard from "./resultCard";
-import List from "@material-ui/core/List";
-import ListItem from "@material-ui/core/ListItem";
-import IconButton from "@material-ui/core/IconButton";
-import DeleteIcon from "@material-ui/icons/Delete";
-import ListItemText from "@material-ui/core/ListItemText";
-import ListItemSecondaryAction from "@material-ui/core/ListItemSecondaryAction";
-import Card from "@material-ui/core/Card";
-import CardContent from "@material-ui/core/CardContent";
+import FavCard from "./favCard";
 
 class Searcher extends React.Component {
     
@@ -17,10 +10,9 @@ class Searcher extends React.Component {
         super(props);
         
         if(!localStorage.getItem('favIFSC'))
-            localStorage.setItem('favIFSC', "");
+            localStorage.setItem('favIFSC', JSON.stringify([]));
         
-        const prevFavIFSC = localStorage.getItem("favIFSC");
-        const prevFavIFSCArray = prevFavIFSC.split("#").slice(1);
+        const prevFavIFSCArray = JSON.parse(localStorage.getItem("favIFSC"));
      
         this.state = {
             ifsc: "",
@@ -32,7 +24,7 @@ class Searcher extends React.Component {
         this.handleChange = this.handleChange.bind(this);
         this.searchCode = this.searchCode.bind(this);
         this.addToFav = this.addToFav.bind(this);
-
+        this.deleteToFav = this.deleteToFav.bind(this);
     }
 
     handleChange(event) {
@@ -60,20 +52,28 @@ class Searcher extends React.Component {
     }
 
     addToFav(ifsc) {
-        var prevFavIFSC = localStorage.getItem("favIFSC");
-        var prevFavIFSCArray = prevFavIFSC.split("#").slice(1);
+        var prevFavIFSCArray = JSON.parse(localStorage.getItem("favIFSC"));
         if(prevFavIFSCArray.indexOf(ifsc) === -1) {
-            prevFavIFSC = prevFavIFSC + "#" + ifsc;
             prevFavIFSCArray.push(ifsc);
-            localStorage.setItem('favIFSC', prevFavIFSC);
+            localStorage.setItem('favIFSC', JSON.stringify(prevFavIFSCArray));
             this.setState({
                 favIFSC: prevFavIFSCArray
             })
         }
     }
 
+    deleteToFav(ifsc) {
+        var prevFavIFSCArray = JSON.parse(localStorage.getItem("favIFSC"));
+        if(prevFavIFSCArray.indexOf(ifsc) > -1) {
+            prevFavIFSCArray.splice(prevFavIFSCArray.indexOf(ifsc), 1);
+            localStorage.setItem('favIFSC', JSON.stringify(prevFavIFSCArray));
+            this.setState({
+                favIFSC: prevFavIFSCArray    
+            })
+        } 
+    }
+
     render() {
-        
         return (
             <div>
                 <Grid container spacing={40}>
@@ -96,40 +96,19 @@ class Searcher extends React.Component {
                                 <ResultCard 
                                     data={this.state.data} 
                                     addToFav = {this.addToFav}
+                                    deleteToFav = {this.deleteToFav}
+                                    whichIcon = {this.state.favIFSC.includes(this.state.data.IFSC) ? "delete" : "fav"}
                                 />
                             ) : null
                         }
                         </div>
                     </Grid>
                     <Grid item xs={3}>
-                        <Card raised>
-                        <CardContent>
-                        <List>
-                            <ListItem>
-                                <ListItemText
-                                    primary="Favourite" 
-                                />
-                            </ListItem>
-                        {   
-                            this.state.favIFSC.map(value => (
-                                <ListItem
-                                    button
-                                    onClick={(e) => this.searchCode(value, e)}
-                                >
-                                    <ListItemText
-                                        primary={value} 
-                                    />
-                                    <ListItemSecondaryAction>
-                                        <IconButton aria-label="Delete">
-                                            <DeleteIcon />
-                                        </IconButton>
-                                    </ListItemSecondaryAction>
-                                </ListItem>
-                            ))  
-                        }
-                        </List>
-                        </CardContent>
-                        </Card>
+                        <FavCard
+                            favIFSC = {this.state.favIFSC}
+                            searchCode = {this.searchCode}
+                            deleteToFav = {this.deleteToFav}
+                        />
                     </Grid>
                 </Grid>
             </div>

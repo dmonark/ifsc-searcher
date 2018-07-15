@@ -6,6 +6,7 @@ import Typography from '@material-ui/core/Typography';
 import IconButton from '@material-ui/core/IconButton';
 import FavoriteIcon from '@material-ui/icons/Favorite';
 import ShareIcon from '@material-ui/icons/Share';
+import DeleteIcon from "@material-ui/icons/Delete";
 
 class ResultCardSub extends React.Component {
     render() {
@@ -41,9 +42,17 @@ class ResultCard extends React.Component {
                     />
                 </CardContent>
                 <CardActions disableActionSpacing>
-                    <IconButton aria-label="Favorites" onClick={() => this.props.addToFav(this.props.data.IFSC)} >
-                        <FavoriteIcon />
-                    </IconButton>
+                    {
+                        this.props.whichIcon === "delete" ? (
+                            <IconButton aria-label="Delete" onClick={() => this.props.deleteToFav(this.props.data.IFSC)} >
+                                <DeleteIcon />
+                            </IconButton>
+                        ) : (
+                            <IconButton aria-label="Favorites" onClick={() => this.props.addToFav(this.props.data.IFSC)} >
+                                <FavoriteIcon />
+                            </IconButton>
+                        )
+                    }
                     <IconButton aria-label="Share">
                         <ShareIcon />
                     </IconButton>
