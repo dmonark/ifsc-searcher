@@ -10,7 +10,6 @@ import CardContent from "@material-ui/core/CardContent";
 import FavoriteIcon from '@material-ui/icons/Favorite';
 import ListItemIcon from "@material-ui/core/ListItemIcon";
 
-
 class FavCard extends React.Component {
     render() {
         return (
